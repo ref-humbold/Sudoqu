@@ -1,5 +1,6 @@
 import { Theme } from "@mui/material/styles";
-import { SxProps } from "@mui/system";
+import { SystemStyleObject } from "@mui/system";
 
-export type SxClasses = Record<string, SxProps<Theme>>;
+export type SxValue = SystemStyleObject<Theme> | ((theme: Theme) => SystemStyleObject<Theme>);
+export type SxClasses = Record<string, SxValue>;
 export type SxFunction<Args extends unknown[]> = (...args: Args) => SxClasses;

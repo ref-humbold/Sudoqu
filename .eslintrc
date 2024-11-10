@@ -48,7 +48,12 @@
             "asyncArrow": "always"
           }
         ],
-        "prettier/prettier": "error",
+        "prettier/prettier": [
+          "error",
+          {
+            "endOfLine": "auto"
+          }
+        ],
         "@typescript-eslint/array-type": [
           "warn",
           {

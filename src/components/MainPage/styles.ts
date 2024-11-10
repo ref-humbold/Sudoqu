@@ -4,8 +4,5 @@ export const sxClasses: SxClasses = {
   box: {
     height: "100vh",
     width: "100vw"
-  },
-  grid: {
-    height: "100%"
   }
 };
