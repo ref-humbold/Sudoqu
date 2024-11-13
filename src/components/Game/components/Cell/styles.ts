@@ -6,5 +6,9 @@ export const sxClasses: SxClasses = {
     height: cellStyle.size,
     width: cellStyle.size,
     outline: `${theme.spacing(cellStyle.spacing)} solid ${cellStyle.borderColor}`
+  }),
+  clicked: theme => ({
+    boxSizing: "border-box",
+    border: `${theme.spacing(cellStyle.spacing * 1.5)} solid ${theme.palette.primary.light}`
   })
 };
