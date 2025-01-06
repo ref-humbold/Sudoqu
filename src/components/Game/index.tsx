@@ -30,7 +30,13 @@ const Game: React.FC = () => {
               return (
                 <Cell
                   cellType={
-                    rand < 0.3 ? CellType.Fixed : rand >= 0.7 ? CellType.Options : CellType.Empty
+                    rand < 0.25
+                      ? CellType.Fixed
+                      : rand < 0.5
+                      ? CellType.Predefined
+                      : rand < 0.75
+                      ? CellType.Options
+                      : CellType.Empty
                   }
                   clicked={coordinates.equals(clickedCell)}
                   setClicked={() => setClickedCell(coordinates)}

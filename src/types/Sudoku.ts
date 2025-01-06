@@ -10,6 +10,13 @@ export class Coordinates {
 
 export const enum CellType {
   Empty = "Empty",
+  Predefined = "Predefined",
   Fixed = "Fixed",
   Options = "Options"
+}
+
+export const enum NumberDisplay {
+  Defined = "Defined",
+  Correct = "Correct",
+  Wrong = "Wrong"
 }
