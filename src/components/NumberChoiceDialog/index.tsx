@@ -7,12 +7,12 @@ import Grid2 from "@mui/material/Grid2";
 import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-import { CellType, SudokuNumber } from "src/types/Sudoku";
+import { CellType, ChosenType, SudokuNumber } from "src/types/Sudoku";
 import ChoiceGrid from "./components/ChoiceGrid";
 
 type NumberChoiceDialogProps = {
   open: boolean;
-  onChooseNumber: (type: CellType, num: SudokuNumber) => void;
+  onChooseNumber: (type: ChosenType, num: SudokuNumber) => void;
   onClose: () => void;
 };
 
@@ -21,7 +21,7 @@ const NumberChoiceDialog: React.FC<NumberChoiceDialogProps> = ({
   onChooseNumber,
   onClose
 }) => {
-  const handleChoiceClick = (type: CellType, num: SudokuNumber) => {
+  const handleChoiceClick = (type: ChosenType, num: SudokuNumber) => {
     onChooseNumber(type, num);
     onClose();
   };

@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import Centered from "src/common/components/Centered";
 import GridThree from "src/common/components/GridThree";
 import { cellStyle, fieldStyle } from "src/common/styles";
-import { CellType, Coordinates } from "src/types/Sudoku";
+import { useGame } from "src/contexts/GameContext";
+import { Coordinates } from "src/types/Sudoku";
 import Cell from "./components/Cell";
 import { sxClasses } from "./styles";
 
 const Game: React.FC = () => {
   const [clickedCell, setClickedCell] = useState<Coordinates | undefined>(undefined);
+  const { getCellValue, setCellValue } = useGame();
 
   return (
     <Centered>
@@ -25,21 +27,12 @@ const Game: React.FC = () => {
                 3 * fieldCoords.col + cellCoords.col
               );
 
-              const rand = Math.random();
-
               return (
                 <Cell
-                  cellType={
-                    rand < 0.25
-                      ? CellType.Fixed
-                      : rand < 0.5
-                      ? CellType.Predefined
-                      : rand < 0.75
-                      ? CellType.Options
-                      : CellType.Empty
-                  }
+                  value={getCellValue(coordinates)}
                   clicked={coordinates.equals(clickedCell)}
                   setClicked={() => setClickedCell(coordinates)}
+                  updateValue={value => setCellValue(coordinates, value)}
                 />
               );
             }}

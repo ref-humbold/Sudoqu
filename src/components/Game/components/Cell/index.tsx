@@ -2,18 +2,20 @@ import React, { useCallback, useState } from "react";
 import { Box } from "@mui/material";
 
 import NumberChoiceDialog from "src/components/NumberChoiceDialog";
-import { CellType, NumberDisplay, SudokuNumber } from "src/types/Sudoku";
+import { CellValue } from "src/types/CellValue";
+import { CellType, NumberDisplay } from "src/types/Sudoku";
 import FixedNumber from "./components/FixedNumber";
 import OptionalNumbers from "./components/OptionalNumbers";
 import { sxClasses } from "./styles";
 
 type CellProps = {
-  cellType: CellType;
+  value: CellValue;
   clicked: boolean;
   setClicked: () => void;
+  updateValue: (v: CellValue) => void;
 };
 
-const Cell: React.FC<CellProps> = ({ cellType, clicked, setClicked }) => {
+const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) => {
   const [choiceDialogOpen, setChoiceDialogOpen] = useState<boolean>(false);
 
   const onCellClick = (cellType: CellType) => {
@@ -24,24 +26,19 @@ const Cell: React.FC<CellProps> = ({ cellType, clicked, setClicked }) => {
     setClicked();
   };
 
-  const renderType = useCallback((cellType: CellType): React.ReactNode => {
-    switch (cellType) {
+  const renderType = useCallback((value: CellValue): React.ReactNode => {
+    switch (value.type) {
       case CellType.Empty:
         return <></>;
 
       case CellType.Predefined:
-        return <FixedNumber value={6} displayType={NumberDisplay.Defined} />;
+        return <FixedNumber value={[...value.values][0]} displayType={NumberDisplay.Defined} />;
 
       case CellType.Fixed:
-        return (
-          <FixedNumber
-            value={4}
-            displayType={Math.random() >= 0.5 ? NumberDisplay.Correct : NumberDisplay.Wrong}
-          />
-        );
+        return <FixedNumber value={[...value.values][0]} displayType={value.display} />;
 
       case CellType.Options:
-        return <OptionalNumbers values={new Set<SudokuNumber>([1, 3, 5, 7, 9])} />;
+        return <OptionalNumbers values={value.values} />;
     }
   }, []);
 
@@ -49,13 +46,15 @@ const Cell: React.FC<CellProps> = ({ cellType, clicked, setClicked }) => {
     <>
       <Box
         sx={[sxClasses.cell, clicked && sxClasses.clicked]}
-        onClick={() => onCellClick(cellType)}
+        onClick={() => onCellClick(value.type)}
       >
-        {renderType(cellType)}
+        {renderType(value)}
       </Box>
       <NumberChoiceDialog
         open={choiceDialogOpen}
-        onChooseNumber={(type, num) => {}}
+        onChooseNumber={(type, num) =>
+          updateValue(type === CellType.Fixed ? CellValue.fixed(num, true) : CellValue.options(num))
+        }
         onClose={() => {
           setChoiceDialogOpen(false);
         }}

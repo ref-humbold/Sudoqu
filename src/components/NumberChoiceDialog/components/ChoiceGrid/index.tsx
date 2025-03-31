@@ -4,12 +4,12 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import GridThree from "src/common/components/GridThree";
-import { CellType, SudokuNumber } from "src/types/Sudoku";
+import { CellType, ChosenType, SudokuNumber } from "src/types/Sudoku";
 import { choiceButtonMetadata, fixedButtonMetadata } from "./utils";
 
 type ChoiceGridProps = {
-  type: CellType.Fixed | CellType.Options;
-  onClick: (type: CellType, number: SudokuNumber) => void;
+  type: ChosenType;
+  onClick: (type: ChosenType, number: SudokuNumber) => void;
 };
 
 const ChoiceGrid: React.FC<ChoiceGridProps> = ({ type, onClick }) => {

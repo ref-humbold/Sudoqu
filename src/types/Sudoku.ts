@@ -6,6 +6,10 @@ export class Coordinates {
   public equals(other: Coordinates | null | undefined): boolean {
     return other != null && this.row === other.row && this.col === other.col;
   }
+
+  public toString(): string {
+    return `(${this.row},${this.col})`;
+  }
 }
 
 export const enum CellType {
@@ -15,8 +19,12 @@ export const enum CellType {
   Options = "Options"
 }
 
+export type ChosenType = CellType.Fixed | CellType.Options;
+
 export const enum NumberDisplay {
   Defined = "Defined",
   Correct = "Correct",
   Wrong = "Wrong"
 }
+
+export type UserNumberDisplay = NumberDisplay.Correct | NumberDisplay.Wrong;
