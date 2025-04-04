@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { generateSudoku } from "src/common/sudokuGenerator";
+import { generateGame } from "src/common/sudokuGenerator";
 
 import { CellValue } from "src/types/CellValue";
-import { GameCells } from "src/types/GameCells";
+import { CellsMap } from "src/types/CellsMap";
 import { Coordinates } from "src/types/Sudoku";
 
 export type GameContextType = {
@@ -13,10 +13,10 @@ export type GameContextType = {
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [gameCells, setGameCells] = useState<GameCells>(new GameCells());
+  const [gameCells, setGameCells] = useState<CellsMap<CellValue>>(new CellsMap<CellValue>());
 
   useEffect(() => {
-    setGameCells(generateSudoku());
+    setGameCells(generateGame());
   }, [setGameCells]);
 
   const getCellValue = (c: Coordinates) => gameCells.get(c) ?? CellValue.empty();

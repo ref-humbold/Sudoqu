@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 import NumberChoiceDialog from "src/components/NumberChoiceDialog";
 import { CellValue } from "src/types/CellValue";
-import { CellType, NumberDisplay } from "src/types/Sudoku";
+import { CellType, NumberDisplay, SudokuNumber } from "src/types/Sudoku";
 import FixedNumber from "./components/FixedNumber";
 import OptionalNumbers from "./components/OptionalNumbers";
 import { sxClasses } from "./styles";
@@ -26,6 +26,26 @@ const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) 
     setClicked();
   };
 
+  const onChooseNumber = (type: CellType, num: SudokuNumber) => {
+    const present = value.values.has(num);
+
+    if (type === CellType.Fixed) {
+      if (present) {
+        updateValue(CellValue.empty());
+      } else {
+        updateValue(CellValue.fixed(num));
+      }
+    } else {
+      if (present && value.type === CellType.Options) {
+        const newValues = [...value.values].filter(v => v !== num);
+
+        updateValue(CellValue.options(...newValues));
+      } else {
+        updateValue(CellValue.options(num, ...value.values));
+      }
+    }
+  };
+
   const renderType = useCallback((value: CellValue): React.ReactNode => {
     switch (value.type) {
       case CellType.Empty:
@@ -35,7 +55,7 @@ const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) 
         return <FixedNumber value={[...value.values][0]} displayType={NumberDisplay.Defined} />;
 
       case CellType.Fixed:
-        return <FixedNumber value={[...value.values][0]} displayType={value.display} />;
+        return <FixedNumber value={[...value.values][0]} displayType={NumberDisplay.Correct} />;
 
       case CellType.Options:
         return <OptionalNumbers values={value.values} />;
@@ -52,12 +72,9 @@ const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) 
       </Box>
       <NumberChoiceDialog
         open={choiceDialogOpen}
-        onChooseNumber={(type, num) =>
-          updateValue(type === CellType.Fixed ? CellValue.fixed(num, true) : CellValue.options(num))
-        }
-        onClose={() => {
-          setChoiceDialogOpen(false);
-        }}
+        onChooseNumber={onChooseNumber}
+        onClose={() => setChoiceDialogOpen(false)}
+        currentValue={value}
       />
     </>
   );

@@ -19,12 +19,10 @@ export const enum CellType {
   Options = "Options"
 }
 
-export type ChosenType = CellType.Fixed | CellType.Options;
+export type ChosenCellType = CellType.Fixed | CellType.Options;
 
 export const enum NumberDisplay {
   Defined = "Defined",
   Correct = "Correct",
   Wrong = "Wrong"
 }
-
-export type UserNumberDisplay = NumberDisplay.Correct | NumberDisplay.Wrong;
