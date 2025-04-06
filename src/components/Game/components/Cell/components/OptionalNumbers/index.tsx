@@ -22,8 +22,12 @@ const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
         <Grid2 key={index} container direction="row" justifyContent="space-evenly">
           {array.map(v => (
             <Grid2 key={v}>
-              <Typography variant="button" color="secondary">
-                {values.has(v) ? v : ""}
+              <Typography
+                variant="button"
+                color="secondary"
+                visibility={values.has(v) ? undefined : "hidden"}
+              >
+                {v}
               </Typography>
             </Grid2>
           ))}

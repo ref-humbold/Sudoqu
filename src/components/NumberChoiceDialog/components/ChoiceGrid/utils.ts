@@ -8,16 +8,16 @@ type ButtonMetadata = {
   text: TypographyProps["variant"];
 };
 
-export const choiceButtonMetadata: ButtonMetadata = {
-  variant: "text",
+export const choiceButtonMetadata = (numberPresent: boolean): ButtonMetadata => ({
+  variant: numberPresent ? "contained" : "text",
   size: "small",
   color: "secondary",
   text: "h5"
-};
+});
 
-export const fixedButtonMetadata: ButtonMetadata = {
-  variant: "outlined",
+export const fixedButtonMetadata = (numberPresent: boolean): ButtonMetadata => ({
+  variant: numberPresent ? "contained" : "outlined",
   size: "medium",
   color: "primary",
   text: "h4"
-};
+});
