@@ -28,7 +28,8 @@ export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ childre
 
   const getCellValue = (c: Coordinates) => playerCells.get(c) ?? CellValue.empty();
 
-  const setCellValue = (c: Coordinates, v: CellValue) => playerCells.set(c, v);
+  const setCellValue = (c: Coordinates, v: CellValue) =>
+    setPlayerCells(current => current.update(c, v));
 
   const checkCellCorrect = (c: Coordinates, number: SudokuNumber) =>
     solutionCells.get(c) === number;

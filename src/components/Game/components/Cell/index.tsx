@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 
 import NumberChoiceDialog from "src/components/NumberChoiceDialog";
 import { CellValue } from "src/types/CellValue";
-import { CellType, NumberDisplay, SudokuNumber } from "src/types/Sudoku";
+import { CellType, ChosenCellType, NumberDisplay, SudokuNumber } from "src/types/Sudoku";
 import FixedNumber from "./components/FixedNumber";
 import OptionalNumbers from "./components/OptionalNumbers";
 import { sxClasses } from "./styles";
@@ -26,23 +26,26 @@ const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) 
     setClicked();
   };
 
-  const onChooseNumber = (type: CellType, num: SudokuNumber) => {
-    const present = value.values.has(num);
+  const onChooseNumber = (newType: ChosenCellType, newNumber: SudokuNumber) => {
+    const present = value.values.has(newNumber);
 
-    if (type === CellType.Fixed) {
-      if (present) {
-        updateValue(CellValue.empty());
-      } else {
-        updateValue(CellValue.fixed(num));
-      }
-    } else {
-      if (present && value.type === CellType.Options) {
-        const newValues = [...value.values].filter(v => v !== num);
+    switch (newType) {
+      case CellType.Fixed:
+        if (present && value.type === CellType.Fixed) {
+          updateValue(CellValue.empty());
+        } else {
+          updateValue(CellValue.fixed(newNumber));
+        }
+        break;
 
-        updateValue(CellValue.options(...newValues));
-      } else {
-        updateValue(CellValue.options(num, ...value.values));
-      }
+      case CellType.Options:
+        if (present && value.type === CellType.Options) {
+          const newValues = [...value.values].filter(v => v !== newNumber);
+          updateValue(CellValue.options(...newValues));
+        } else {
+          updateValue(CellValue.options(newNumber, ...value.values));
+        }
+        break;
     }
   };
 

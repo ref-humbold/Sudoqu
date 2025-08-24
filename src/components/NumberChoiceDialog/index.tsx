@@ -14,7 +14,7 @@ import ChoiceGrid from "./components/ChoiceGrid";
 type NumberChoiceDialogProps = {
   open: boolean;
   currentValue: CellValue;
-  onChooseNumber: (type: ChosenCellType, num: SudokuNumber) => void;
+  onChooseNumber: (newType: ChosenCellType, newNumber: SudokuNumber) => void;
   onClose: () => void;
 };
 
