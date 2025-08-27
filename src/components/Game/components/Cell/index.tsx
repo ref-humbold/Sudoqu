@@ -1,35 +1,85 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Box } from "@mui/material";
 
-import { CellType, SudokuNumber } from "src/types/Sudoku";
+import NumberChoiceDialog from "src/components/NumberChoiceDialog";
+import { CellValue } from "src/types/CellValue";
+import { CellType, ChosenCellType, NumberDisplay, SudokuNumber } from "src/types/Sudoku";
 import FixedNumber from "./components/FixedNumber";
 import OptionalNumbers from "./components/OptionalNumbers";
 import { sxClasses } from "./styles";
 
 type CellProps = {
-  cellType: CellType;
+  value: CellValue;
   clicked: boolean;
   setClicked: () => void;
+  updateValue: (v: CellValue) => void;
 };
 
-const Cell: React.FC<CellProps> = ({ cellType, clicked, setClicked }) => {
-  const renderType = useCallback((cellType: CellType): React.ReactNode => {
-    switch (cellType) {
+const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) => {
+  const [choiceDialogOpen, setChoiceDialogOpen] = useState<boolean>(false);
+
+  const onCellClick = (cellType: CellType) => {
+    if (cellType !== CellType.Predefined) {
+      setChoiceDialogOpen(true);
+    }
+
+    setClicked();
+  };
+
+  const onChooseNumber = (newType: ChosenCellType, newNumber: SudokuNumber) => {
+    const present = value.values.has(newNumber);
+
+    switch (newType) {
+      case CellType.Fixed:
+        if (present && value.type === CellType.Fixed) {
+          updateValue(CellValue.empty());
+        } else {
+          updateValue(CellValue.fixed(newNumber));
+        }
+        break;
+
+      case CellType.Options:
+        if (present && value.type === CellType.Options) {
+          const newValues = [...value.values].filter(v => v !== newNumber);
+          updateValue(CellValue.options(...newValues));
+        } else {
+          updateValue(CellValue.options(newNumber, ...value.values));
+        }
+        break;
+    }
+  };
+
+  const renderType = useCallback((value: CellValue): React.ReactNode => {
+    switch (value.type) {
       case CellType.Empty:
         return <></>;
 
+      case CellType.Predefined:
+        return <FixedNumber value={[...value.values][0]} displayType={NumberDisplay.Defined} />;
+
       case CellType.Fixed:
-        return <FixedNumber value={4} displayWrong={Math.random() > 0.5} />;
+        return <FixedNumber value={[...value.values][0]} displayType={NumberDisplay.Correct} />;
 
       case CellType.Options:
-        return <OptionalNumbers values={new Set<SudokuNumber>([1, 3, 5, 7, 9])} />;
+        return <OptionalNumbers values={value.values} />;
     }
   }, []);
 
   return (
-    <Box sx={[sxClasses.cell, clicked && sxClasses.clicked]} onClick={setClicked}>
-      {renderType(cellType)}
-    </Box>
+    <>
+      <Box
+        sx={[sxClasses.cell, clicked && sxClasses.clicked]}
+        onClick={() => onCellClick(value.type)}
+      >
+        {renderType(value)}
+      </Box>
+      <NumberChoiceDialog
+        open={choiceDialogOpen}
+        onChooseNumber={onChooseNumber}
+        onClose={() => setChoiceDialogOpen(false)}
+        currentValue={value}
+      />
+    </>
   );
 };
 
