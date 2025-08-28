@@ -3,7 +3,7 @@ import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import Grid2 from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
@@ -37,22 +37,22 @@ const NumberChoiceDialog: React.FC<NumberChoiceDialogProps> = ({
         </IconButton>
       </DialogActions>
       <DialogContent>
-        <Grid2 container direction="row" justifyContent="center" alignItems="center" spacing={6}>
-          <Grid2>
+        <Grid container direction="row" justifyContent="center" alignItems="center" spacing={6}>
+          <Grid>
             <ChoiceGrid
               type={CellType.Options}
               currentValue={currentValue}
               onClick={handleChoiceClick}
             />
-          </Grid2>
-          <Grid2>
+          </Grid>
+          <Grid>
             <ChoiceGrid
               type={CellType.Fixed}
               currentValue={currentValue}
               onClick={handleChoiceClick}
             />
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </DialogContent>
     </Dialog>
   );

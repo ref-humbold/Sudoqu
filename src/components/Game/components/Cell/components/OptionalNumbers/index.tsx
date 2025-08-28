@@ -1,5 +1,5 @@
 import React from "react";
-import Grid2 from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import { sxCommon } from "src/common/styles";
@@ -17,11 +17,11 @@ const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
   ];
 
   return (
-    <Grid2 sx={sxCommon.fullSize} container direction="column" justifyContent="space-evenly">
+    <Grid sx={sxCommon.fullSize} container direction="column" justifyContent="space-evenly">
       {valuesArray.map((array, index) => (
-        <Grid2 key={index} container direction="row" justifyContent="space-evenly">
+        <Grid key={index} container direction="row" justifyContent="space-evenly">
           {array.map(v => (
-            <Grid2 key={v}>
+            <Grid key={v}>
               <Typography
                 variant="button"
                 color="secondary"
@@ -29,11 +29,11 @@ const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
               >
                 {v}
               </Typography>
-            </Grid2>
+            </Grid>
           ))}
-        </Grid2>
+        </Grid>
       ))}
-    </Grid2>
+    </Grid>
   );
 };
 
