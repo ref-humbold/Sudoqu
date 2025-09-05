@@ -25,7 +25,18 @@ export class CellsMap<V> {
     this.cellsMap.set(c.toString(), v);
   }
 
-  public update(c: Coordinates, v: V): CellsMap<V> {
-    return new CellsMap(this.cellsMap.set(c.toString(), v));
+  public copy(): CellsMap<V> {
+    return new CellsMap(this.cellsMap);
+  }
+
+  public map<T>(func: (v: V) => T): CellsMap<T> {
+    return new CellsMap(
+      new Map<string, T | undefined>(
+        [...this.cellsMap.entries()].map(([key, value]) => [
+          key,
+          value !== undefined ? func(value) : undefined
+        ])
+      )
+    );
   }
 }

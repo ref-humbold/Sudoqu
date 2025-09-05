@@ -1,45 +1,41 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { generateGame, generateSudoku } from "src/common/sudokuGenerator";
+import { generateGame } from "src/common/sudokuGenerator";
 
 import { CellValue } from "src/types/CellValue";
 import { CellsMap } from "src/types/CellsMap";
-import { Coordinates, SudokuNumber } from "src/types/Sudoku";
+import { Coordinates } from "src/types/Sudoku";
+import { useSudoku } from "./SudokuContext";
 
 export type GameContextType = {
   getCellValue: (c: Coordinates) => CellValue;
   setCellValue: (c: Coordinates, v: CellValue) => void;
-  checkCellCorrect: (c: Coordinates, number: SudokuNumber) => boolean;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [solutionCells, setSolutionCells] = useState<CellsMap<SudokuNumber>>(
-    new CellsMap<SudokuNumber>()
-  );
+  const { sudokuCells } = useSudoku();
+
   const [playerCells, setPlayerCells] = useState<CellsMap<CellValue>>(new CellsMap<CellValue>());
 
   useEffect(() => {
-    const sudoku = generateSudoku();
-
-    setSolutionCells(sudoku);
-    setPlayerCells(generateGame(sudoku));
-  }, [setPlayerCells]);
+    setPlayerCells(generateGame(sudokuCells));
+  }, [sudokuCells]);
 
   const getCellValue = (c: Coordinates) => playerCells.get(c) ?? CellValue.empty();
 
   const setCellValue = (c: Coordinates, v: CellValue) =>
-    setPlayerCells(current => current.update(c, v));
-
-  const checkCellCorrect = (c: Coordinates, number: SudokuNumber) =>
-    solutionCells.get(c) === number;
+    setPlayerCells(current => {
+      const newMap = current.copy();
+      newMap.set(c, v);
+      return newMap;
+    });
 
   return (
     <GameContext.Provider
       value={{
         getCellValue,
-        setCellValue,
-        checkCellCorrect
+        setCellValue
       }}
     >
       {children}
