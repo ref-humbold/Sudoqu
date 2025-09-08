@@ -6,27 +6,10 @@ import prettierPlugin from "eslint-plugin-prettier/recommended";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 
-export default defineConfig([
+export default defineConfig(
   globalIgnores(["**/node_modules", "**/dist"]),
-  eslintJs.configs.recommended,
-  eslintTs.configs.recommended,
-  reactPlugin.configs.flat.recommended,
-  reactHooksPlugin.configs["recommended-latest"],
-  prettierPlugin,
   {
-    name: "Custom",
-    files: ["**/*.ts", "**/*.tsx"],
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname
-      }
-    },
-    settings: {
-      react: {
-        version: "detect"
-      }
-    },
+    extends: [eslintJs.configs.recommended],
     rules: {
       "eqeqeq": [
         "warn",
@@ -51,13 +34,19 @@ export default defineConfig([
           named: "never",
           asyncArrow: "always"
         }
-      ],
-      "prettier/prettier": [
-        "error",
-        {
-          endOfLine: "auto"
-        }
-      ],
+      ]
+    }
+  },
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    extends: [eslintTs.configs.recommended],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname
+      }
+    },
+    rules: {
       "@typescript-eslint/array-type": [
         "warn",
         {
@@ -83,10 +72,36 @@ export default defineConfig([
       ],
       "@typescript-eslint/no-empty-function": "off",
       "@typescript-eslint/no-inferrable-types": "warn",
-      "@typescript-eslint/prefer-readonly": "warn",
-      "react/display-name": "off",
+      "@typescript-eslint/prefer-readonly": "warn"
+    }
+  },
+  {
+    extends: [reactPlugin.configs.flat.recommended],
+    settings: {
+      react: {
+        version: "detect"
+      }
+    },
+    rules: {
+      "react/display-name": "off"
+    }
+  },
+  {
+    extends: [reactHooksPlugin.configs["recommended-latest"]],
+    rules: {
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn"
     }
+  },
+  {
+    extends: [prettierPlugin],
+    rules: {
+      "prettier/prettier": [
+        "error",
+        {
+          endOfLine: "auto"
+        }
+      ]
+    }
   }
-]);
+);
