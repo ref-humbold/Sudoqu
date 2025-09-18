@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { generateGame } from "src/common/sudokuGenerator";
 
-import { CellValue, EmptyCellValue } from "src/types/CellValue";
+import { CellValue, EmptyCellValue, FixedCellValue, OptionsCellValue } from "src/types/CellValue";
 import { CellsMap } from "src/types/CellsMap";
 import { Coordinates } from "src/types/Sudoku";
 import { useSudoku } from "./SudokuContext";
@@ -27,6 +27,16 @@ export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ childre
   const setCellValue = (c: Coordinates, v: CellValue) =>
     setPlayerCells(current => {
       const newMap = current.copy();
+      const expectedNumber = sudokuCells.get(c);
+
+      if (expectedNumber != null) {
+        if (v instanceof FixedCellValue) {
+          v.isCorrect = expectedNumber === v.value;
+        } else if (v instanceof OptionsCellValue) {
+          v.setErrorValues(new Set([expectedNumber]));
+        }
+      }
+
       newMap.set(c, v);
       return newMap;
     });

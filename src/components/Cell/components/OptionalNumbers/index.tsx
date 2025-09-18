@@ -25,7 +25,7 @@ const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
             <Grid key={v}>
               <Typography
                 variant="button"
-                color="secondary"
+                color={values.getTextColour(v)}
                 visibility={values.contains(v) ? undefined : "hidden"}
               >
                 {v}

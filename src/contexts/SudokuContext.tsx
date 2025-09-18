@@ -2,11 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { generateSudoku as generateSudoku } from "src/common/sudokuGenerator";
 
 import { CellsMap } from "src/types/CellsMap";
-import { Coordinates, SudokuNumber } from "src/types/Sudoku";
+import { SudokuNumber } from "src/types/Sudoku";
 
 export type SudokuContextType = {
   sudokuCells: CellsMap<SudokuNumber>;
-  checkCellCorrect: (c: Coordinates, number: SudokuNumber) => boolean;
 };
 
 const SudokuContext = createContext<SudokuContextType | undefined>(undefined);
@@ -20,13 +19,7 @@ export const SudokuContextProvider: React.FC<React.PropsWithChildren> = ({ child
     setSudokuCells(generateSudoku());
   }, []);
 
-  const checkCellCorrect = (c: Coordinates, number: SudokuNumber) => sudokuCells.get(c) === number;
-
-  return (
-    <SudokuContext.Provider value={{ sudokuCells, checkCellCorrect }}>
-      {children}
-    </SudokuContext.Provider>
-  );
+  return <SudokuContext.Provider value={{ sudokuCells }}>{children}</SudokuContext.Provider>;
 };
 
 export const useSudoku = (): SudokuContextType => {

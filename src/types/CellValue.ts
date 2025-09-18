@@ -67,7 +67,7 @@ export class OptionsCellValue implements CellValue {
   }
 
   public contains(number: SudokuNumber): boolean {
-    return this.values.get(number) != null;
+    return this.values.has(number);
   }
 
   public allValues(): SudokuNumber[] {
@@ -78,9 +78,11 @@ export class OptionsCellValue implements CellValue {
     return type === ChosenCellType.Options;
   }
 
-  public setCorrectness(number: SudokuNumber, isCorrect: boolean) {
-    if (this.values.has(number)) {
-      this.values.set(number, isCorrect);
-    }
+  public getTextColour(number: SudokuNumber): string {
+    return this.values.get(number) === false ? "error" : "secondary";
+  }
+
+  public setErrorValues(errorNumbers: Set<SudokuNumber>): void {
+    [...this.values.keys()].forEach(v => this.values.set(v, !errorNumbers.has(v)));
   }
 }
