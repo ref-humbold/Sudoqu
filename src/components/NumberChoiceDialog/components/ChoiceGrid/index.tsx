@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 import GridThree from "src/common/components/GridThree";
 import { CellValue } from "src/types/CellValue";
-import { CellType, ChosenCellType, SudokuNumber } from "src/types/Sudoku";
+import { ChosenCellType, SudokuNumber } from "src/types/Sudoku";
 import { choiceButtonMetadata, fixedButtonMetadata } from "./utils";
 
 type ChoiceGridProps = {
@@ -21,11 +21,12 @@ const ChoiceGrid: React.FC<ChoiceGridProps> = ({ type, currentValue, onClick }) 
     [7, 8, 9]
   ];
 
-  const metadataFunction = type === CellType.Fixed ? fixedButtonMetadata : choiceButtonMetadata;
+  const metadataFunction =
+    type === ChosenCellType.Fixed ? fixedButtonMetadata : choiceButtonMetadata;
 
   const renderNumber = (num: SudokuNumber) => {
     const buttonMetadata = metadataFunction(
-      currentValue.type === type && currentValue.values.has(num)
+      currentValue.matches(type) && currentValue.contains(num)
     );
 
     return (

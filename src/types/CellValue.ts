@@ -1,27 +1,86 @@
-import { CellType, SudokuNumber } from "./Sudoku";
+import { ChosenCellType, SudokuNumber } from "./Sudoku";
 
-export class CellValue {
-  public readonly type: CellType;
-  public readonly values: Set<SudokuNumber>;
+export interface CellValue {
+  allValues(): SudokuNumber[];
+  contains(number: SudokuNumber): boolean;
+  matches(type: ChosenCellType): boolean;
+}
 
-  private constructor(type: CellType, values: SudokuNumber[]) {
-    this.type = type;
-    this.values = new Set(values);
+export abstract class SingleCellValue implements CellValue {
+  constructor(public readonly value: SudokuNumber) {}
+
+  public allValues(): SudokuNumber[] {
+    return [this.value];
   }
 
-  public static empty(): CellValue {
-    return new CellValue(CellType.Empty, []);
+  public contains(number: SudokuNumber): boolean {
+    return this.value === number;
   }
 
-  public static defined(value: SudokuNumber): CellValue {
-    return new CellValue(CellType.Predefined, [value]);
+  public abstract matches(type: ChosenCellType): boolean;
+  public abstract getTextColour(): string;
+}
+
+export class EmptyCellValue implements CellValue {
+  constructor() {}
+
+  public allValues(): SudokuNumber[] {
+    return [];
   }
 
-  public static fixed(value: SudokuNumber): CellValue {
-    return new CellValue(CellType.Fixed, [value]);
+  public contains(): boolean {
+    return false;
   }
 
-  public static options(...values: SudokuNumber[]): CellValue {
-    return new CellValue(CellType.Options, values);
+  public matches(): boolean {
+    return false;
+  }
+}
+
+export class DefinedCellValue extends SingleCellValue {
+  public getTextColour(): string {
+    return "textSecondary";
+  }
+
+  public matches(): boolean {
+    return false;
+  }
+}
+
+export class FixedCellValue extends SingleCellValue {
+  public isCorrect = true;
+
+  public getTextColour(): string {
+    return this.isCorrect ? "primary" : "error";
+  }
+
+  public matches(type: ChosenCellType): boolean {
+    return type === ChosenCellType.Fixed;
+  }
+}
+
+export class OptionsCellValue implements CellValue {
+  private readonly values: Map<SudokuNumber, boolean>;
+
+  constructor(...values: SudokuNumber[]) {
+    this.values = new Map<SudokuNumber, boolean>(values.map(v => [v, true] as const));
+  }
+
+  public contains(number: SudokuNumber): boolean {
+    return this.values.get(number) != null;
+  }
+
+  public allValues(): SudokuNumber[] {
+    return [...this.values.keys()];
+  }
+
+  public matches(type: ChosenCellType): boolean {
+    return type === ChosenCellType.Options;
+  }
+
+  public setCorrectness(number: SudokuNumber, isCorrect: boolean) {
+    if (this.values.has(number)) {
+      this.values.set(number, isCorrect);
+    }
   }
 }

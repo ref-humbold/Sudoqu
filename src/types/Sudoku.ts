@@ -15,17 +15,7 @@ export class Coordinates {
   }
 }
 
-export const enum CellType {
-  Empty = "Empty",
-  Predefined = "Predefined",
+export const enum ChosenCellType {
   Fixed = "Fixed",
   Options = "Options"
-}
-
-export type ChosenCellType = CellType.Fixed | CellType.Options;
-
-export const enum NumberDisplay {
-  Defined = "Defined",
-  Correct = "Correct",
-  Wrong = "Wrong"
 }

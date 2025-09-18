@@ -1,4 +1,4 @@
-import { CellValue } from "src/types/CellValue";
+import { CellValue, DefinedCellValue, EmptyCellValue } from "src/types/CellValue";
 import { CellsMap } from "src/types/CellsMap";
 import { Coordinates, SudokuNumber } from "src/types/Sudoku";
 
@@ -20,7 +20,7 @@ const cutCells = (cellsMap: CellsMap<CellValue>, coordinates: Coordinates): void
     new Coordinates(8 - (coordinates.row % 5), coordinates.col % 5),
     new Coordinates(coordinates.row % 5, 8 - (coordinates.col % 5)),
     new Coordinates(8 - (coordinates.row % 5), 8 - (coordinates.col % 5))
-  ].forEach(c => cellsMap.set(c, CellValue.empty()));
+  ].forEach(c => cellsMap.set(c, new EmptyCellValue()));
 };
 
 export const generateSudoku = (): CellsMap<SudokuNumber> => {
@@ -36,7 +36,7 @@ export const generateSudoku = (): CellsMap<SudokuNumber> => {
 };
 
 export const generateGame = (sudoku: CellsMap<SudokuNumber>): CellsMap<CellValue> => {
-  const gameCells = sudoku.map(v => CellValue.defined(v));
+  const gameCells = sudoku.map(v => new DefinedCellValue(v));
 
   for (let i = 0; i < 5; ++i) {
     for (let j = 0; j < 5; ++j) {

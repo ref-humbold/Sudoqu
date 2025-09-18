@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 import { CellValue } from "src/types/CellValue";
-import { CellType, ChosenCellType, SudokuNumber } from "src/types/Sudoku";
+import { ChosenCellType, SudokuNumber } from "src/types/Sudoku";
 import ChoiceGrid from "./components/ChoiceGrid";
 
 type NumberChoiceDialogProps = {
@@ -40,14 +40,14 @@ const NumberChoiceDialog: React.FC<NumberChoiceDialogProps> = ({
         <Grid container direction="row" justifyContent="center" alignItems="center" spacing={6}>
           <Grid>
             <ChoiceGrid
-              type={CellType.Options}
+              type={ChosenCellType.Options}
               currentValue={currentValue}
               onClick={handleChoiceClick}
             />
           </Grid>
           <Grid>
             <ChoiceGrid
-              type={CellType.Fixed}
+              type={ChosenCellType.Fixed}
               currentValue={currentValue}
               onClick={handleChoiceClick}
             />

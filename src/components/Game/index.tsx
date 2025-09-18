@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import Centered from "src/common/components/Centered";
 import GridThree from "src/common/components/GridThree";
 import { cellStyle, fieldStyle } from "src/common/styles";
+import Cell from "src/components/Cell";
 import { useGame } from "src/contexts/GameContext";
 import { Coordinates } from "src/types/Sudoku";
-import Cell from "./components/Cell";
 import { sxClasses } from "./styles";
 
 const Game: React.FC = () => {
