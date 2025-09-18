@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { generateGame } from "src/common/sudokuGenerator";
 
-import { CellValue } from "src/types/CellValue";
+import { CellValue, EmptyCellValue } from "src/types/CellValue";
 import { CellsMap } from "src/types/CellsMap";
 import { Coordinates } from "src/types/Sudoku";
 import { useSudoku } from "./SudokuContext";
@@ -22,7 +22,7 @@ export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ childre
     setPlayerCells(generateGame(sudokuCells));
   }, [sudokuCells]);
 
-  const getCellValue = (c: Coordinates) => playerCells.get(c) ?? CellValue.empty();
+  const getCellValue = (c: Coordinates) => playerCells.get(c) ?? new EmptyCellValue();
 
   const setCellValue = (c: Coordinates, v: CellValue) =>
     setPlayerCells(current => {

@@ -3,10 +3,11 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
 import { sxCommon } from "src/common/styles";
+import { OptionsCellValue } from "src/types/CellValue";
 import { SudokuNumber } from "src/types/Sudoku";
 
 type OptionalNumbersProps = {
-  values: Set<SudokuNumber>;
+  values: OptionsCellValue;
 };
 
 const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
@@ -25,7 +26,7 @@ const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
               <Typography
                 variant="button"
                 color="secondary"
-                visibility={values.has(v) ? undefined : "hidden"}
+                visibility={values.contains(v) ? undefined : "hidden"}
               >
                 {v}
               </Typography>
