@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { generateSudoku as generateSudoku } from "src/common/sudokuGenerator";
 
 import { CellsMap } from "src/types/CellsMap";
@@ -11,13 +11,7 @@ export type SudokuContextType = {
 const SudokuContext = createContext<SudokuContextType | undefined>(undefined);
 
 export const SudokuContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [sudokuCells, setSudokuCells] = useState<CellsMap<SudokuNumber>>(
-    new CellsMap<SudokuNumber>()
-  );
-
-  useEffect(() => {
-    setSudokuCells(generateSudoku());
-  }, []);
+  const sudokuCells = generateSudoku();
 
   return <SudokuContext.Provider value={{ sudokuCells }}>{children}</SudokuContext.Provider>;
 };

@@ -1,5 +1,6 @@
 import { CellValue, DefinedCellValue, EmptyCellValue } from "src/types/CellValue";
 import { CellsMap } from "src/types/CellsMap";
+import { Game } from "src/types/Game";
 import { Coordinates, SudokuNumber } from "src/types/Sudoku";
 
 const sudokuBoard: SudokuNumber[][] = [
@@ -23,20 +24,11 @@ const cutCells = (cellsMap: CellsMap<CellValue>, coordinates: Coordinates): void
   ].forEach(c => cellsMap.set(c, new EmptyCellValue()));
 };
 
-export const generateSudoku = (): CellsMap<SudokuNumber> => {
-  const sudokuCells = new CellsMap<SudokuNumber>();
+export const generateSudoku = (): CellsMap<SudokuNumber> =>
+  new CellsMap<SudokuNumber>(c => sudokuBoard[c.row][c.col]);
 
-  for (let i = 0; i < 9; ++i) {
-    for (let j = 0; j < 9; ++j) {
-      sudokuCells.set(new Coordinates(i, j), sudokuBoard[i][j]);
-    }
-  }
-
-  return sudokuCells;
-};
-
-export const generateGame = (sudoku: CellsMap<SudokuNumber>): CellsMap<CellValue> => {
-  const gameCells = sudoku.map(v => new DefinedCellValue(v));
+export const generateGame = (sudoku: CellsMap<SudokuNumber>): Game => {
+  const gameCells = sudoku.map(v => (v == null ? new EmptyCellValue() : new DefinedCellValue(v)));
 
   for (let i = 0; i < 5; ++i) {
     for (let j = 0; j < 5; ++j) {
@@ -49,5 +41,5 @@ export const generateGame = (sudoku: CellsMap<SudokuNumber>): CellsMap<CellValue
     }
   }
 
-  return gameCells;
+  return new Game(gameCells);
 };

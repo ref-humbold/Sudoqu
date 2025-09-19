@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { generateGame } from "src/common/sudokuGenerator";
 
-import { CellValue, EmptyCellValue, FixedCellValue, OptionsCellValue } from "src/types/CellValue";
-import { CellsMap } from "src/types/CellsMap";
-import { Coordinates } from "src/types/Sudoku";
+import { CellValue, FixedCellValue, OptionsCellValue } from "src/types/CellValue";
+import { Game } from "src/types/Game";
+import { Coordinates, SudokuNumber } from "src/types/Sudoku";
 import { useSudoku } from "./SudokuContext";
 
 export type GameContextType = {
@@ -16,29 +16,31 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { sudokuCells } = useSudoku();
 
-  const [playerCells, setPlayerCells] = useState<CellsMap<CellValue>>(new CellsMap<CellValue>());
+  const [game, setGame] = useState<Game>(new Game());
 
   useEffect(() => {
-    setPlayerCells(generateGame(sudokuCells));
+    setGame(generateGame(sudokuCells));
   }, [sudokuCells]);
 
-  const getCellValue = (c: Coordinates) => playerCells.get(c) ?? new EmptyCellValue();
+  const getCellValue = (c: Coordinates) => game.getCellValue(c);
 
   const setCellValue = (c: Coordinates, v: CellValue) =>
-    setPlayerCells(current => {
-      const newMap = current.copy();
-      const expectedNumber = sudokuCells.get(c);
+    setGame(current => {
+      if (v instanceof FixedCellValue || v instanceof OptionsCellValue) {
+        const invalidNumbers = new Set<SudokuNumber>([
+          ...current.getRowNumbers(c),
+          ...current.getColumnNumbers(c),
+          ...current.getFieldNumbers(c)
+        ]);
 
-      if (expectedNumber != null) {
         if (v instanceof FixedCellValue) {
-          v.isCorrect = expectedNumber === v.value;
-        } else if (v instanceof OptionsCellValue) {
-          v.setErrorValues(new Set([expectedNumber]));
+          v.isCorrect = !invalidNumbers.has(v.value);
+        } else {
+          v.setErrorValues(invalidNumbers);
         }
       }
 
-      newMap.set(c, v);
-      return newMap;
+      return current.update(c, v);
     });
 
   return (
