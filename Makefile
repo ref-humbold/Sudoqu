@@ -18,4 +18,4 @@ run : build
 	docker run -p 80:80 --rm $(TAG)
 
 run-dev : build-dev
-	docker run -p 80:80 --rm $(TAG_DEV)
+	docker run -p 80:3000 --rm $(TAG_DEV)
