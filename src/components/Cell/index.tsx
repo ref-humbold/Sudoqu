@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import NumberChoiceDialog from "src/components/NumberChoiceDialog";
 import {
   CellValue,
+  UserCellValue,
   DefinedCellValue,
   EmptyCellValue,
   FixedCellValue,
@@ -19,7 +20,7 @@ type CellProps = {
   value: CellValue;
   clicked: boolean;
   setClicked: () => void;
-  updateValue: (v: CellValue) => void;
+  updateValue: (v: UserCellValue) => void;
 };
 
 const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) => {
@@ -48,7 +49,12 @@ const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) 
       case ChosenCellType.Options:
         if (present && value instanceof OptionsCellValue) {
           const newValues = value.allValues().filter(v => v !== newNumber);
-          updateValue(new OptionsCellValue(...newValues));
+
+          if (newValues.length === 0) {
+            updateValue(new EmptyCellValue());
+          } else {
+            updateValue(new OptionsCellValue(...newValues));
+          }
         } else {
           updateValue(new OptionsCellValue(newNumber, ...value.allValues()));
         }

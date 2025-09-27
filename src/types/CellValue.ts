@@ -3,6 +3,9 @@ import { ChosenCellType, SudokuNumber } from "./Sudoku";
 export interface CellValue {
   allValues(): SudokuNumber[];
   contains(number: SudokuNumber): boolean;
+}
+
+export interface UserCellValue extends CellValue {
   matches(type: ChosenCellType): boolean;
 }
 
@@ -17,11 +20,10 @@ export abstract class SingleCellValue implements CellValue {
     return this.value === number;
   }
 
-  public abstract matches(type: ChosenCellType): boolean;
   public abstract getTextColour(): string;
 }
 
-export class EmptyCellValue implements CellValue {
+export class EmptyCellValue implements UserCellValue {
   constructor() {}
 
   public allValues(): SudokuNumber[] {
@@ -41,13 +43,9 @@ export class DefinedCellValue extends SingleCellValue {
   public getTextColour(): string {
     return "textSecondary";
   }
-
-  public matches(): boolean {
-    return false;
-  }
 }
 
-export class FixedCellValue extends SingleCellValue {
+export class FixedCellValue extends SingleCellValue implements UserCellValue {
   public isCorrect = true;
 
   public getTextColour(): string {
@@ -59,7 +57,7 @@ export class FixedCellValue extends SingleCellValue {
   }
 }
 
-export class OptionsCellValue implements CellValue {
+export class OptionsCellValue implements UserCellValue {
   private readonly values: Map<SudokuNumber, boolean>;
 
   constructor(...values: SudokuNumber[]) {

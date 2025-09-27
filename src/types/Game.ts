@@ -1,6 +1,6 @@
 import { CellsMap } from "./CellsMap";
-import { CellValue, EmptyCellValue, SingleCellValue } from "./CellValue";
-import { Coordinates, SudokuNumber } from "./Sudoku";
+import { CellValue, EmptyCellValue } from "./CellValue";
+import { Coordinates } from "./Sudoku";
 
 export class Game {
   private readonly cells: CellsMap<CellValue>;
@@ -9,61 +9,59 @@ export class Game {
     this.cells = cells ?? new CellsMap<CellValue>(() => new EmptyCellValue());
   }
 
-  public update(coordinates: Coordinates, value: CellValue): Game {
-    return new Game(
-      this.cells.map((v, c) =>
-        v == null ? new EmptyCellValue() : c.equals(coordinates) ? value : v
-      )
+  public update(entries: Map<Coordinates, CellValue>): Game {
+    const entriesArray = [...entries.entries()];
+    const newCells = this.cells.map((v, c) =>
+      v == null ? new EmptyCellValue() : (entriesArray.find(e => e[0].equals(c))?.[1] ?? v)
     );
+
+    return new Game(newCells);
   }
 
   public getCellValue(coordinates: Coordinates): CellValue {
     return this.cells.get(coordinates) ?? new EmptyCellValue();
   }
 
-  public getRowNumbers(cellCoordinates: Coordinates): Set<SudokuNumber> {
-    const numbers: Set<SudokuNumber> = new Set<SudokuNumber>();
+  public getRowValues(cellCoordinates: Coordinates): Map<Coordinates, CellValue> {
+    const rowValues = new Map<Coordinates, CellValue>();
 
     for (let j = 0; j < 9; ++j) {
-      const value = this.cells.get(new Coordinates(cellCoordinates.row, j));
+      const coordinates = new Coordinates(cellCoordinates.row, j);
+      const value = this.cells.get(coordinates);
 
-      if (value instanceof SingleCellValue) {
-        numbers.add(value.value);
-      }
+      rowValues.set(coordinates, value ?? new EmptyCellValue());
     }
 
-    return numbers;
+    return rowValues;
   }
 
-  public getColumnNumbers(cellCoordinates: Coordinates): Set<SudokuNumber> {
-    const numbers: Set<SudokuNumber> = new Set<SudokuNumber>();
+  public getColumnNumbers(cellCoordinates: Coordinates): Map<Coordinates, CellValue> {
+    const columnValues = new Map<Coordinates, CellValue>();
 
     for (let i = 0; i < 9; ++i) {
-      const value = this.cells.get(new Coordinates(i, cellCoordinates.col));
+      const coordinates = new Coordinates(i, cellCoordinates.col);
+      const value = this.cells.get(coordinates);
 
-      if (value instanceof SingleCellValue) {
-        numbers.add(value.value);
-      }
+      columnValues.set(coordinates, value ?? new EmptyCellValue());
     }
 
-    return numbers;
+    return columnValues;
   }
 
-  public getFieldNumbers(cellCoordinates: Coordinates): Set<SudokuNumber> {
-    const numbers: Set<SudokuNumber> = new Set<SudokuNumber>();
+  public getFieldNumbers(cellCoordinates: Coordinates): Map<Coordinates, CellValue> {
+    const fieldValues = new Map<Coordinates, CellValue>();
     const startRow = Math.floor(cellCoordinates.row / 3) * 3;
     const startCol = Math.floor(cellCoordinates.col / 3) * 3;
 
     for (let i = startRow; i < startRow + 3; ++i) {
       for (let j = startCol; j < startCol + 3; ++j) {
-        const value = this.cells.get(new Coordinates(i, j));
+        const coordinates = new Coordinates(i, j);
+        const value = this.cells.get(coordinates);
 
-        if (value instanceof SingleCellValue) {
-          numbers.add(value.value);
-        }
+        fieldValues.set(coordinates, value ?? new EmptyCellValue());
       }
     }
 
-    return numbers;
+    return fieldValues;
   }
 }
