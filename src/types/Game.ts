@@ -1,12 +1,18 @@
 import { CellsMap } from "./CellsMap";
-import { CellValue, EmptyCellValue } from "./CellValue";
+import { CellValue, DefinedCellValue, EmptyCellValue, FixedCellValue } from "./CellValue";
 import { Coordinates } from "./Sudoku";
 
 export class Game {
   private readonly cells: CellsMap<CellValue>;
+  public readonly isFinished: boolean;
 
   constructor(cells?: CellsMap<CellValue>) {
     this.cells = cells ?? new CellsMap<CellValue>(() => new EmptyCellValue());
+    this.isFinished = this.cells.every(
+      cellValue =>
+        cellValue instanceof DefinedCellValue ||
+        (cellValue instanceof FixedCellValue && cellValue.isCorrect)
+    );
   }
 
   public update(entries: Map<Coordinates, CellValue>): Game {

@@ -7,13 +7,13 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
-import { CellValue } from "src/types/CellValue";
+import { UserCellValue } from "src/types/CellValue";
 import { ChosenCellType, SudokuNumber } from "src/types/Sudoku";
 import ChoiceGrid from "./components/ChoiceGrid";
 
 type NumberChoiceDialogProps = {
   open: boolean;
-  currentValue: CellValue;
+  currentValue: UserCellValue;
   onChooseNumber: (newType: ChosenCellType, newNumber: SudokuNumber) => void;
   onClose: () => void;
 };

@@ -8,7 +8,11 @@ import { useGame } from "src/contexts/GameContext";
 import { Coordinates } from "src/types/Sudoku";
 import { sxClasses } from "./styles";
 
-const Game: React.FC = () => {
+type GameProps = {
+  onFinished: () => void;
+};
+
+const Game: React.FC<GameProps> = ({ onFinished }) => {
   const [clickedCell, setClickedCell] = useState<Coordinates | undefined>(undefined);
   const { getCellValue, setCellValue } = useGame();
 
@@ -32,7 +36,13 @@ const Game: React.FC = () => {
                   value={getCellValue(coordinates)}
                   clicked={coordinates.equals(clickedCell)}
                   setClicked={() => setClickedCell(coordinates)}
-                  updateValue={value => setCellValue(coordinates, value)}
+                  updateValue={value => {
+                    const isFinished = setCellValue(coordinates, value);
+
+                    if (isFinished) {
+                      onFinished();
+                    }
+                  }}
                 />
               );
             }}

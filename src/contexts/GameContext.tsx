@@ -15,7 +15,7 @@ import { useSudoku } from "./SudokuContext";
 
 export type GameContextType = {
   getCellValue: (c: Coordinates) => CellValue;
-  setCellValue: (c: Coordinates, v: UserCellValue) => void;
+  setCellValue: (c: Coordinates, v: UserCellValue) => boolean;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -104,7 +104,9 @@ export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ childre
 
   const getCellValue = (c: Coordinates) => game.getCellValue(c);
 
-  const setCellValue = (c: Coordinates, v: UserCellValue) =>
+  const setCellValue = (c: Coordinates, v: UserCellValue) => {
+    let isFinished = false;
+
     setGame(current => {
       const updates =
         v instanceof FixedCellValue
@@ -113,8 +115,14 @@ export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ childre
             ? onUpdateToOptionsValue(current, c, v)
             : onUpdateToEmptyValue(current, c);
 
-      return game.update(updates);
+      const newGame = game.update(updates);
+
+      isFinished = newGame.isFinished;
+      return newGame;
     });
+
+    return isFinished;
+  };
 
   return (
     <GameContext.Provider

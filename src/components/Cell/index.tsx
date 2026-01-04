@@ -5,7 +5,6 @@ import NumberChoiceDialog from "src/components/NumberChoiceDialog";
 import {
   CellValue,
   UserCellValue,
-  DefinedCellValue,
   EmptyCellValue,
   FixedCellValue,
   OptionsCellValue,
@@ -26,11 +25,11 @@ type CellProps = {
 const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) => {
   const [choiceDialogOpen, setChoiceDialogOpen] = useState<boolean>(false);
 
-  const onCellClick = (cellValue: CellValue) => {
-    if (!(cellValue instanceof DefinedCellValue)) {
-      setChoiceDialogOpen(true);
-    }
+  const canOpenDialog = (cellValue: CellValue): cellValue is UserCellValue =>
+    "matches" in cellValue;
 
+  const onCellClick = () => {
+    setChoiceDialogOpen(true);
     setClicked();
   };
 
@@ -76,15 +75,17 @@ const Cell: React.FC<CellProps> = ({ value, clicked, setClicked, updateValue }) 
 
   return (
     <>
-      <Box sx={[sxClasses.cell, clicked && sxClasses.clicked]} onClick={() => onCellClick(value)}>
+      <Box sx={[sxClasses.cell, clicked && sxClasses.clicked]} onClick={onCellClick}>
         {renderType(value)}
       </Box>
-      <NumberChoiceDialog
-        open={choiceDialogOpen}
-        onChooseNumber={onChooseNumber}
-        onClose={() => setChoiceDialogOpen(false)}
-        currentValue={value}
-      />
+      {canOpenDialog(value) && (
+        <NumberChoiceDialog
+          open={choiceDialogOpen}
+          onChooseNumber={onChooseNumber}
+          onClose={() => setChoiceDialogOpen(false)}
+          currentValue={value}
+        />
+      )}
     </>
   );
 };

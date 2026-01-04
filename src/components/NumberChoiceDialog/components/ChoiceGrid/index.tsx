@@ -4,13 +4,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 import GridThree from "src/common/components/GridThree";
-import { CellValue } from "src/types/CellValue";
+import { UserCellValue } from "src/types/CellValue";
 import { ChosenCellType, SudokuNumber } from "src/types/Sudoku";
 import { choiceButtonMetadata, fixedButtonMetadata } from "./utils";
 
 type ChoiceGridProps = {
   type: ChosenCellType;
-  currentValue: CellValue;
+  currentValue: UserCellValue;
   onClick: (type: ChosenCellType, number: SudokuNumber) => void;
 };
 

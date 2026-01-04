@@ -28,4 +28,8 @@ export class CellsMap<V> {
       return func(value, c);
     });
   }
+
+  public every(func: (v: V | undefined) => boolean): boolean {
+    return [...this.cellsMap.values()].every(v => func(v));
+  }
 }
