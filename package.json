@@ -2,6 +2,7 @@
   "name": "sudoqu",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "rsbuild dev",
     "build": "rsbuild build",
@@ -12,26 +13,26 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.6",
-    "@mui/material": "^7.3.6",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "@mui/icons-material": "^7.3.11",
+    "@mui/material": "^7.3.11",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
-    "@rsbuild/core": "^1.7.1",
-    "@rsbuild/plugin-react": "^1.4.2",
-    "@types/node": "^24.10.4",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "browserslist": "^4.28.1",
-    "eslint": "^9.39.2",
+    "@eslint/js": "^9.39.5",
+    "@rsbuild/core": "^2.1.13",
+    "@rsbuild/plugin-react": "^2.1.0",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "browserslist": "^4.28.8",
+    "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.6",
     "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "prettier": "^3.7.4",
-    "typescript": "~5.9.3",
-    "typescript-eslint": "^8.51.0"
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.9.6",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.67.0"
   }
 }
