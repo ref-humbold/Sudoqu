@@ -18,7 +18,7 @@ const FinishedDialog: React.FC<FinishedDialogProps> = ({ open, onClose }) => {
     <Dialog open={open} maxWidth="md">
       <DialogContent>
         <Typography variant="h2" align="center" color="primary" sx={sxClasses.text}>
-          Congratulations!{"\n"}You've finished the game.
+          Congratulations!{"\n"}You{"'"}ve finished the game.
         </Typography>
       </DialogContent>
       <DialogActions>

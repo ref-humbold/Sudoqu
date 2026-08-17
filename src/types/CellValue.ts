@@ -1,4 +1,4 @@
-import { ChosenCellType, SudokuNumber } from "./Sudoku";
+import { ChosenCellType, SudokuNumber } from "src/types/Sudoku";
 
 export interface CellValue {
   allValues(): SudokuNumber[];

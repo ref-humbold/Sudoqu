@@ -3,11 +3,11 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import Game from "../Game";
-import Timer from "../Timer";
-import { sxClasses } from "./styles";
 import { sxCommon } from "src/common/styles";
-import FinishedDialog from "../FinishedDialog";
+import FinishedDialog from "src/components/FinishedDialog";
+import Game from "src/components/Game";
+import Timer from "src/components/Timer";
+import { sxClasses } from "./styles";
 
 const MainPage: React.FC = () => {
   const [isGameFinished, setIsGameFinished] = React.useState(false);
@@ -16,7 +16,7 @@ const MainPage: React.FC = () => {
   return (
     <>
       <Box sx={sxClasses.box} component="main">
-        <Grid container direction="column" sx={sxCommon.fullSize}>
+        <Grid sx={[sxCommon.fullSize, sxClasses.page]} container>
           <Grid>
             <Game
               onFinished={() => {

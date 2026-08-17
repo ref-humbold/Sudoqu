@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { generateGame } from "src/common/sudokuGenerator";
+import React, { createContext, useContext, useState } from "react";
+import { generateGame, generateSudoku } from "src/common/sudokuGenerator";
 
 import {
   CellValue,
@@ -11,7 +11,6 @@ import {
 } from "src/types/CellValue";
 import { Game } from "src/types/Game";
 import { Coordinates, SudokuNumber } from "src/types/Sudoku";
-import { useSudoku } from "./SudokuContext";
 
 export type GameContextType = {
   getCellValue: (c: Coordinates) => CellValue;
@@ -21,13 +20,9 @@ export type GameContextType = {
 const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { sudokuCells } = useSudoku();
+  const sudokuCells = generateSudoku();
 
-  const [game, setGame] = useState<Game>(new Game());
-
-  useEffect(() => {
-    setGame(generateGame(sudokuCells));
-  }, [sudokuCells]);
+  const [game, setGame] = useState<Game>(generateGame(sudokuCells));
 
   const onUpdateToFixedValue = (
     game: Game,

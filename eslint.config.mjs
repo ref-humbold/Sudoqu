@@ -24,7 +24,7 @@ export default defineConfig(
       "no-var": "error",
       "prefer-arrow-callback": "error",
       "prefer-const": "warn",
-      "prefer-destructuring": "warn",
+      "prefer-destructuring": "off",
       "quotes": ["warn", "double"],
       "semi": ["error", "always"],
       "space-before-function-paren": [
@@ -86,7 +86,7 @@ export default defineConfig(
     }
   },
   {
-    extends: [reactHooksPlugin.configs["recommended-latest"]],
+    extends: [reactHooksPlugin.configs.flat["recommended-latest"]],
     rules: {
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn"

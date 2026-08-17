@@ -1,6 +1,6 @@
-import { CellsMap } from "./CellsMap";
-import { CellValue, DefinedCellValue, EmptyCellValue, FixedCellValue } from "./CellValue";
-import { Coordinates } from "./Sudoku";
+import { CellsMap } from "src/types/CellsMap";
+import { CellValue, DefinedCellValue, EmptyCellValue, FixedCellValue } from "src/types/CellValue";
+import { Coordinates } from "src/types/Sudoku";
 
 export class Game {
   private readonly cells: CellsMap<CellValue>;

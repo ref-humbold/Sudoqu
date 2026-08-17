@@ -1,4 +1,4 @@
-import { Coordinates } from "./Sudoku";
+import { Coordinates } from "src/types/Sudoku";
 
 export class CellsMap<V> {
   private readonly cellsMap: Map<string, V>;

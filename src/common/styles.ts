@@ -28,5 +28,9 @@ export const sxCommon: SxClasses = {
   fullSize: {
     height: "100%",
     width: "100%"
+  },
+  centering: {
+    justifyContent: "center",
+    alignItems: "center"
   }
 };

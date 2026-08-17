@@ -12,7 +12,7 @@ export const sxClasses: SxClasses = {
   outerGrid: theme => ({
     minHeight: minSize(theme),
     minWidth: minSize(theme),
-    margin: cellStyle.size
+    margin: "2rem"
   }),
   innerGrid: theme => ({
     outline: `${theme.spacing(fieldStyle.spacing)} solid ${fieldStyle.borderColor}`

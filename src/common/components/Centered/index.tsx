@@ -5,7 +5,7 @@ import { sxCommon } from "src/common/styles";
 
 const Centered: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <Grid sx={sxCommon.fullSize} container justifyContent="center" alignItems="center">
+    <Grid sx={[sxCommon.fullSize, sxCommon.centering]} container>
       <Grid>{children}</Grid>
     </Grid>
   );

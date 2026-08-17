@@ -1,10 +1,12 @@
 import React from "react";
-import Grid from "@mui/material/Grid";
+
+import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
 import { sxCommon } from "src/common/styles";
 import { OptionsCellValue } from "src/types/CellValue";
 import { SudokuNumber } from "src/types/Sudoku";
+import { sxClasses } from "./styles";
 
 type OptionalNumbersProps = {
   values: OptionsCellValue;
@@ -18,23 +20,22 @@ const OptionalNumbers: React.FC<OptionalNumbersProps> = ({ values }) => {
   ];
 
   return (
-    <Grid sx={sxCommon.fullSize} container direction="column" justifyContent="space-evenly">
+    <Stack sx={[sxCommon.fullSize, sxClasses.numbersGrid]} direction="column">
       {valuesArray.map((array, index) => (
-        <Grid key={index} container direction="row" justifyContent="space-evenly">
+        <Stack key={index} sx={sxClasses.numbersGrid} direction="row">
           {array.map(v => (
-            <Grid key={v}>
-              <Typography
-                variant="button"
-                color={values.getTextColour(v)}
-                visibility={values.contains(v) ? undefined : "hidden"}
-              >
-                {v}
-              </Typography>
-            </Grid>
+            <Typography
+              key={v}
+              sx={[!values.contains(v) && sxClasses.hidden]}
+              variant="button"
+              color={values.getTextColour(v)}
+            >
+              {v}
+            </Typography>
           ))}
-        </Grid>
+        </Stack>
       ))}
-    </Grid>
+    </Stack>
   );
 };
 

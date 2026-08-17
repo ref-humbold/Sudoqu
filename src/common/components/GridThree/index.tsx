@@ -1,25 +1,27 @@
 import React from "react";
-import Grid, { GridProps } from "@mui/material/Grid";
+
+import Box from "@mui/material/Box";
+import Stack, { StackProps } from "@mui/material/Stack";
 
 import { Coordinates } from "src/types/Sudoku";
 
-type GridThreeProps = Pick<GridProps, "spacing" | "sx"> & {
+type GridThreeProps = Pick<StackProps, "spacing" | "sx"> & {
   renderItem: (coords: Coordinates) => React.ReactNode;
 };
 
-const GridThree: React.FC<GridThreeProps> = ({ renderItem, ...gridProps }) => {
+const GridThree: React.FC<GridThreeProps> = ({ renderItem, ...stackProps }) => {
   const indices = [0, 1, 2];
 
   return (
-    <Grid {...gridProps} container direction="column">
+    <Stack {...stackProps} direction="column">
       {indices.map(i => (
-        <Grid key={i} container direction="row">
+        <Stack key={i} direction="row">
           {indices.map(j => (
-            <Grid key={j}>{renderItem(new Coordinates(i, j))}</Grid>
+            <Box key={j}>{renderItem(new Coordinates(i, j))}</Box>
           ))}
-        </Grid>
+        </Stack>
       ))}
-    </Grid>
+    </Stack>
   );
 };
 
